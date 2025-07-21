@@ -1,5 +1,3 @@
-﻿Tekla Open API Example
-
-An extended application that creates a drawing containing basic views of the selected parts.
-
-API:s used: Tekla.Structures.Model, Tekla.Structures.Drawing.
+﻿1.Класс View 
+Можно попробовать сначала выгружать веткой чертежей
+свойства отдельного чертежа - 
