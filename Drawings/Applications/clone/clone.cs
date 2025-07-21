@@ -17,103 +17,13 @@ namespace DrawingTestApplication1
 
         private Model Model = new Model();
         private DrawingHandler DrawingHandler = new DrawingHandler();
-
-        #region Coordinate system calculations
-
-        readonly Tekla.Structures.Geometry3d.Vector UpDirection = new Tekla.Structures.Geometry3d.Vector(0.0, 0.0, 1.0);
-        /// <summary>
-        /// Gets part default front view coordinate system
-        /// Gets coordinate system as it is defined in the TS core for part/component basic views, which is different than in singlepart/assembly drawings.
-        /// </summary>
-        /// <param name="objectCoordinateSystem"></param>
-        /// <returns></returns>
-        private Tekla.Structures.Geometry3d.CoordinateSystem GetBasicViewsCoordinateSystemForFrontView(Tekla.Structures.Geometry3d.CoordinateSystem objectCoordinateSystem)
-        {
-            Tekla.Structures.Geometry3d.CoordinateSystem result = new Tekla.Structures.Geometry3d.CoordinateSystem();
-
-            result.Origin = new Tekla.Structures.Geometry3d.Point(objectCoordinateSystem.Origin);
-            result.AxisX = new Tekla.Structures.Geometry3d.Vector(objectCoordinateSystem.AxisX) * -1.0;
-            result.AxisY = new Tekla.Structures.Geometry3d.Vector(objectCoordinateSystem.AxisY);
-            
-            Tekla.Structures.Geometry3d.Vector tempVector = (result.AxisX.Cross(UpDirection));
-            
-            if(tempVector == new Tekla.Structures.Geometry3d.Vector())
-                tempVector = (objectCoordinateSystem.AxisY.Cross(UpDirection));
-
-            result.AxisX = tempVector.Cross(UpDirection).GetNormal();
-            result.AxisY = UpDirection.GetNormal();
-
-            return result;
-        }
-        
-        /// <summary>
-        /// Gets part default top view coordinate system
-        /// Gets coordinate system as it is defined in the TS core for part/component basic views, which is different than in singlepart/assembly drawings.
-        /// </summary>
-        /// <param name="objectCoordinateSystem"></param>
-        /// <returns></returns>
-        private Tekla.Structures.Geometry3d.CoordinateSystem GetBasicViewsCoordinateSystemForTopView(Tekla.Structures.Geometry3d.CoordinateSystem objectCoordinateSystem)
-        {
-            Tekla.Structures.Geometry3d.CoordinateSystem result = new Tekla.Structures.Geometry3d.CoordinateSystem();
-
-            result.Origin = new Tekla.Structures.Geometry3d.Point(objectCoordinateSystem.Origin);
-            result.AxisX = new Tekla.Structures.Geometry3d.Vector(objectCoordinateSystem.AxisX) * -1.0;
-            result.AxisY = new Tekla.Structures.Geometry3d.Vector(objectCoordinateSystem.AxisY);
-            
-            Tekla.Structures.Geometry3d.Vector tempVector = (result.AxisX.Cross(UpDirection));
-
-            if(tempVector == new Tekla.Structures.Geometry3d.Vector())
-                tempVector = (objectCoordinateSystem.AxisY.Cross(UpDirection));
-
-            result.AxisX = tempVector.Cross(UpDirection);
-            result.AxisY = tempVector;
-
-            return result;
-        }
-
-        /// <summary>
-        /// Gets part default end view coordinate system
-        /// Gets coordinate system as it is defined in the TS core for part/component basic views, which is different than in singlepart/assembly drawings.
-        /// </summary>
-        /// <param name="objectCoordinateSystem"></param>
-        /// <returns></returns>
-        private Tekla.Structures.Geometry3d.CoordinateSystem GetBasicViewsCoordinateSystemForEndView(Tekla.Structures.Geometry3d.CoordinateSystem objectCoordinateSystem)
-        {
-            Tekla.Structures.Geometry3d.CoordinateSystem result = new Tekla.Structures.Geometry3d.CoordinateSystem();
-
-            result.Origin = new Tekla.Structures.Geometry3d.Point(objectCoordinateSystem.Origin);
-            result.AxisX = new Tekla.Structures.Geometry3d.Vector(objectCoordinateSystem.AxisX) * -1.0;
-            result.AxisY = new Tekla.Structures.Geometry3d.Vector(objectCoordinateSystem.AxisY);
-            
-            Tekla.Structures.Geometry3d.Vector tempVector = (result.AxisX.Cross(UpDirection));
-
-            if(tempVector == new Tekla.Structures.Geometry3d.Vector())
-                tempVector = (objectCoordinateSystem.AxisY.Cross(UpDirection));
-
-            result.AxisX = tempVector;
-            result.AxisY = UpDirection;
-
-            return result;
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Creates the basic views
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+       
         private void Create_click(object sender, EventArgs e)
         {
-            //TransformationPlane current = Model.GetWorkPlaneHandler().GetCurrentTransformationPlane(); // We use global transformation
-
             try
             {
-                //Model.GetWorkPlaneHandler().SetCurrentTransformationPlane(new TransformationPlane()); // We use global transformation
                 ModelObjectEnumerator selectedModelObjects = new TSMUI.ModelObjectSelector().GetSelectedObjects();
-
                 GADrawing MyDrawing = null;
-
                 while (selectedModelObjects.MoveNext())
                 {
                     Tekla.Structures.Geometry3d.CoordinateSystem ModelObjectCoordSys;
@@ -123,7 +33,6 @@ namespace DrawingTestApplication1
 
                     GetCoordinateSystemAndNameOfSelectedObject(selectedModelObjects, out ModelObjectCoordSys, out ModelObjectName);
 
-                    // Creates new empty genaral arrangement drawing
                     MyDrawing = new GADrawing(DrawingName, "standard");
                     MyDrawing.Insert();
 
@@ -131,8 +40,6 @@ namespace DrawingTestApplication1
                         DrawingHandler.SetActiveDrawing(MyDrawing, true); // Open drawing in editor
                     else
                         DrawingHandler.SetActiveDrawing(MyDrawing, false); // Open drawing in invisible mode. When drawing is opened in invisible mode, it must always be saved and closed.
-
-                    // Handle different model object types
 
                     ArrayList Parts = new ArrayList();
 
@@ -152,10 +59,11 @@ namespace DrawingTestApplication1
                     DrawingHandler.CloseActiveDrawing(true); // Save and close the active drawing
                 }
                 
+                
+                
                 if (MyDrawing != null && openDrawings.Checked)
                     DrawingHandler.SetActiveDrawing(MyDrawing);
 
-               // Model.GetWorkPlaneHandler().SetCurrentTransformationPlane(current); // return original transformation
             }
             catch (Exception exception)
             {
