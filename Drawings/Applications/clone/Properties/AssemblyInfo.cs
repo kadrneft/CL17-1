@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DrawingTestApplication1")]
+[assembly: AssemblyTitle("CloneTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tekla")]
-[assembly: AssemblyProduct("DrawingTestApplication1")]
+[assembly: AssemblyProduct("CloneTest")]
 [assembly: AssemblyCopyright("Copyright © Tekla 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
