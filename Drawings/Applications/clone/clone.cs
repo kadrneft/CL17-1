@@ -18,18 +18,26 @@ namespace DrawingTestApplication1
         private Model Model = new Model();
         private DrawingHandler DrawingHandler = new DrawingHandler();
        
+        // Кнопка выгрузить текущий чертеж:
         private void Create_click(object sender, EventArgs e)
         {
-           
+            PullOutTheDrawing();
         }
-       
 
-        private void Clone_Load(object sender, EventArgs e)
+        //Сборный метод для выгрузки чертежа
+        void PullOutTheDrawing() 
         {
-
+            //Получений текущего чертежа
+            //Перебор всех элементов чертежа
         }
 
-        private void GroupBox1_Enter(object sender, EventArgs e)
+        
+        
+        
+        
+        
+        
+        private void Clone_Load(object sender, EventArgs e)
         {
 
         }
